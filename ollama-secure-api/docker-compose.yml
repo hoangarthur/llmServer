@@ -14,7 +14,7 @@ services:
     container_name: fastapi
     environment:
       - OLLAMA_URL=http://ollama:11434
-      - API_KEY=ee4768fa43b242e7a09d39d4839b30ab.hpPHHaRQZl-eMSgNu9VWq6_m
+      - API_KEY=${API_KEY}
     depends_on:
       - ollama
     networks:
