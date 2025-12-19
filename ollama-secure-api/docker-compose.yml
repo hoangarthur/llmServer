@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - llm_net
+
+  api:
+    build: ./api
+    container_name: fastapi
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - API_KEY=ee4768fa43b242e7a09d39d4839b30ab.hpPHHaRQZl-eMSgNu9VWq6_m
+    depends_on:
+      - ollama
+    networks:
+      - llm_net
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api
+    networks:
+      - llm_net
+
+volumes:
+  ollama_data:
+
+networks:
+  llm_net:
